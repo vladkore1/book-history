@@ -1,4 +1,5 @@
 ﻿using BookHistory.Domain.Entities;
+using BookHistory.Infrastructure.Persistance.Seeding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,11 +9,16 @@ namespace BookHistory.Infrastructure.Persistance.Configurations
     {
         public void Configure(EntityTypeBuilder<BookChange> builder)
         {
-            builder.Property(x => x.Description)
+            builder.Property(bc => bc.Description)
                 .HasMaxLength(500);
 
-            builder.Property(x => x.ChangeType)
+            builder.Property(bc => bc.ChangeType)
                 .HasConversion<string>();
+
+            builder.HasIndex(bc => new { bc.BookId, bc.OccurredAt });
+            builder.HasIndex(bc => bc.OccurredAt);
+
+            builder.HasData(BookChangeSeed.All);
         }
     }
 }

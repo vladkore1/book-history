@@ -1,4 +1,5 @@
 ﻿using BookHistory.Domain.Entities;
+using BookHistory.Infrastructure.Persistance.Seeding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -13,6 +14,8 @@ namespace BookHistory.Infrastructure.Persistance.Configurations
 
             builder.Property(b => b.Description)
                 .HasMaxLength(1000);
+
+            builder.HasData(BookSeed.All);
         }
     }
 }
