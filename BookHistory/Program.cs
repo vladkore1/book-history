@@ -1,3 +1,4 @@
+using BookHistory.Application.Services.BookChanges;
 using BookHistory.Application.Services.Books;
 using BookHistory.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IBookChangeService, BookChangeService>();
 
 var app = builder.Build();
 
