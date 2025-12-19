@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using BookHistory.Api.ExceptionHandlers;
+using System.Text.Json.Serialization;
 
 namespace BookHistory.Api
 {
@@ -25,6 +26,10 @@ namespace BookHistory.Api
                     Description = "API for managing books and viewing change history"
                 });
             });
+
+            services.AddProblemDetails();
+            services.AddExceptionHandler<AppExceptionHandler>();
+            services.AddExceptionHandler<CatchAllExceptionHandler>();
 
             return services;
         }

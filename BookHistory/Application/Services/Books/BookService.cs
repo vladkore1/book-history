@@ -4,6 +4,7 @@ using BookHistory.Application.Dtos.Common;
 using BookHistory.Application.Events;
 using BookHistory.Domain.Entities;
 using BookHistory.Domain.Events;
+using BookHistory.Domain.Exceptions;
 using BookHistory.Infrastructure.Extensions;
 using BookHistory.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +40,7 @@ namespace BookHistory.Application.Services.Books
                 .FirstOrDefaultAsync(b => b.Id == bookId);
 
             if (book == null)
-                throw new Exception("Book not found");
+                throw new AppException("Book not found", StatusCodes.Status404NotFound);
 
             var events = BookChangeDetector.Detect(book, request);
             if (events.Count == 0)
