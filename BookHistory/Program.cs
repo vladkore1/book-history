@@ -1,3 +1,4 @@
+using BookHistory.Application.Services.Books;
 using BookHistory.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +12,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddScoped<IBookService, BookService>();
 
 var app = builder.Build();
 
