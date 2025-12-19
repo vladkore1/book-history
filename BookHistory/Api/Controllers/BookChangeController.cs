@@ -13,7 +13,7 @@ namespace BookHistory.Api.Controllers
 
         [HttpGet]
         public async Task<ActionResult<PagedResult<BookChangeResponse>>> GetAll(
-            [FromQuery] BookChangeQuery query)
+            [FromQuery] BookChangePaginatedQuery query)
         {
             var result = await _bookChangeService.GetAsync(query);
             return Ok(result);
@@ -23,7 +23,7 @@ namespace BookHistory.Api.Controllers
         public async Task<ActionResult<ICollection<BookChangeGroupedResponse>>> GetGrouped(
             [FromQuery] BookChangeQuery query)
         {
-            var result = await _bookChangeService.GetGroupedAsync();
+            var result = await _bookChangeService.GetGroupedAsync(query);
             return Ok(result);
         }
     }

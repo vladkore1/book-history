@@ -1,4 +1,6 @@
-﻿namespace BookHistory.Api
+﻿using System.Text.Json.Serialization;
+
+namespace BookHistory.Api
 {
     public static class DependencyInjection
     {
@@ -6,7 +8,12 @@
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(
+                        new JsonStringEnumConverter());
+                });
 
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(c =>

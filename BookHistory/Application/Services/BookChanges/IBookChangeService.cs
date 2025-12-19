@@ -5,7 +5,7 @@ namespace BookHistory.Application.Services.BookChanges
 {
     public interface IBookChangeService
     {
-        Task<PagedResult<BookChangeResponse>> GetAsync(BookChangeQuery query);
-        Task<ICollection<BookChangeGroupedResponse>> GetGroupedAsync();
+        Task<PagedResult<BookChangeResponse>> GetAsync(BookChangePaginatedQuery query);
+        Task<ICollection<BookChangeGroupedResponse>> GetGroupedAsync(BookChangeQuery query);
     }
 }

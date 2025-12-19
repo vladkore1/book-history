@@ -13,9 +13,11 @@ namespace BookHistory.Application.Services.BookChanges
         private readonly ApplicationDbContext _db = db;
 
         public async Task<PagedResult<BookChangeResponse>> GetAsync(
-            BookChangeQuery query)
+            BookChangePaginatedQuery query)
         {
             return await _db.BookChanges
+                .ApplyFilters(query)
+                .ApplyOrdering(query)
                 .Select(bc => new BookChangeResponse()
                 {
                     Id = bc.Id,
@@ -27,9 +29,14 @@ namespace BookHistory.Application.Services.BookChanges
                 .ToPagedResultAsync(query.Page, query.PageSize);
         }
 
-        public async Task<ICollection<BookChangeGroupedResponse>> GetGroupedAsync()
+        public async Task<ICollection<BookChangeGroupedResponse>> GetGroupedAsync(
+            BookChangeQuery query)
         {
+            // Intentionally not allowing pagination when grouping due to bad UX
+
             var items = await _db.BookChanges
+                .ApplyFilters(query)
+                .ApplyOrdering(query)
                 .Select(bc => new BookChangeResponse()
                 {
                     Id = bc.Id,
