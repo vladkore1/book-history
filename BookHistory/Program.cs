@@ -1,5 +1,7 @@
+using BookHistory.Application.Events;
 using BookHistory.Application.Services.BookChanges;
 using BookHistory.Application.Services.Books;
+using BookHistory.Infrastructure.Events;
 using BookHistory.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +27,8 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IBookChangeService, BookChangeService>();
+builder.Services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
+builder.Services.AddDomainEvents();
 
 var app = builder.Build();
 
