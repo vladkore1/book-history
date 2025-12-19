@@ -1,4 +1,6 @@
-﻿namespace BookHistory.Application.Dtos.BookDtos
+﻿using BookHistory.Application.Dtos.BookChangeDtos;
+
+namespace BookHistory.Application.Dtos.BookDtos
 {
     public sealed class BookResponse
     {
@@ -7,5 +9,6 @@
         public required string Description { get; init; }
         public required DateOnly PublishDate { get; init; }
         public required IReadOnlyList<string> Authors { get; init; }
+        public required IReadOnlyList<BookChangeResponse> LatestChanges { get; init; }
     }
 }

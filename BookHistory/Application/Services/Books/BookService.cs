@@ -1,7 +1,10 @@
-﻿using BookHistory.Application.Dtos.BookDtos;
+﻿using BookHistory.Application.Dtos.BookChangeDtos;
+using BookHistory.Application.Dtos.BookDtos;
+using BookHistory.Application.Dtos.Common;
 using BookHistory.Application.Events;
 using BookHistory.Domain.Entities;
 using BookHistory.Domain.Events;
+using BookHistory.Infrastructure.Extensions;
 using BookHistory.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 
@@ -65,7 +68,7 @@ namespace BookHistory.Application.Services.Books
                 await _dispatcher.DispatchAsync(e);
         }
 
-        public async Task<ICollection<BookResponse>> GetAsync()
+        public async Task<PagedResult<BookResponse>> GetAsync(BookQuery query)
         {
             return await _db.Books
                 .Select(b => new BookResponse()
@@ -75,8 +78,19 @@ namespace BookHistory.Application.Services.Books
                     Description = b.Description,
                     PublishDate = b.PublishDate,
                     Authors = b.Authors,
+                    LatestChanges = b.BookChanges
+                        .Take(5)
+                        .Select(bc => new BookChangeResponse()
+                        {
+                            Id = bc.Id,
+                            BookId = bc.BookId,
+                            Description = bc.Description,
+                            Type = bc.ChangeType,
+                            OccurredAt = bc.OccurredAt,
+                        })
+                        .ToList()
                 })
-                .ToListAsync();
+                .ToPagedResultAsync(query.Page, query.PageSize);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BookHistory.Application.Dtos.BookDtos;
+using BookHistory.Application.Dtos.Common;
 using BookHistory.Application.Services.Books;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,9 +12,9 @@ namespace BookHistory.Api.Controllers
         private readonly IBookService _bookService = bookService;
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyCollection<BookResponse>>> GetAll()
+        public async Task<ActionResult<PagedResult<BookResponse>>> GetAll([FromQuery] BookQuery query)
         {
-            var books = await _bookService.GetAsync();
+            var books = await _bookService.GetAsync(query);
             return Ok(books);
         }
 

@@ -1,4 +1,5 @@
 ﻿using BookHistory.Application.Dtos.BookChangeDtos;
+using BookHistory.Application.Dtos.Common;
 using BookHistory.Application.Services.BookChanges;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,14 +12,16 @@ namespace BookHistory.Api.Controllers
         private readonly IBookChangeService _bookChangeService = bookChangeService;
 
         [HttpGet]
-        public async Task<ActionResult<ICollection<BookChangeResponse>>> GetAll()
+        public async Task<ActionResult<PagedResult<BookChangeResponse>>> GetAll(
+            [FromQuery] BookChangeQuery query)
         {
-            var result = await _bookChangeService.GetAsync();
+            var result = await _bookChangeService.GetAsync(query);
             return Ok(result);
         }
 
         [HttpGet("grouped")]
-        public async Task<ActionResult<ICollection<BookChangeGroupedResponse>>> GetGrouped()
+        public async Task<ActionResult<ICollection<BookChangeGroupedResponse>>> GetGrouped(
+            [FromQuery] BookChangeQuery query)
         {
             var result = await _bookChangeService.GetGroupedAsync();
             return Ok(result);

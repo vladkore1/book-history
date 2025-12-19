@@ -1,6 +1,8 @@
 ﻿using BookHistory.Application.Dtos.BookChangeDtos;
+using BookHistory.Application.Dtos.Common;
 using BookHistory.Domain.Entities;
 using BookHistory.Domain.Enums;
+using BookHistory.Infrastructure.Extensions;
 using BookHistory.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,7 +12,8 @@ namespace BookHistory.Application.Services.BookChanges
     {
         private readonly ApplicationDbContext _db = db;
 
-        public async Task<ICollection<BookChangeResponse>> GetAsync()
+        public async Task<PagedResult<BookChangeResponse>> GetAsync(
+            BookChangeQuery query)
         {
             return await _db.BookChanges
                 .Select(bc => new BookChangeResponse()
@@ -21,7 +24,7 @@ namespace BookHistory.Application.Services.BookChanges
                     Type = bc.ChangeType,
                     OccurredAt = bc.OccurredAt,
                 })
-                .ToListAsync();
+                .ToPagedResultAsync(query.Page, query.PageSize);
         }
 
         public async Task<ICollection<BookChangeGroupedResponse>> GetGroupedAsync()
